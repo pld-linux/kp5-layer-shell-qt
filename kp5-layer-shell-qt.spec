@@ -1,15 +1,15 @@
-%define		kdeplasmaver	5.24.0
+%define		kdeplasmaver	5.24.1
 %define		qtver		5.15.2
 %define		kf5ver		5.82.0
 %define		kpname		layer-shell-qt
 Summary:	layer-shell-qt
 Name:		kp5-%{kpname}
-Version:	5.24.0
+Version:	5.24.1
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	http://download.kde.org/stable/plasma/%{kdeplasmaver}/%{kpname}-%{version}.tar.xz
-# Source0-md5:	7eae43606459dd0a288d5c081d9a6a2a
+# Source0-md5:	b08989a5086c40082a0f42b2e65d512e
 URL:		http://www.kde.org/
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5Gui-devel >= %{qtver}
