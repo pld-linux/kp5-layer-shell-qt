@@ -1,18 +1,18 @@
 #
 # Conditional build:
 %bcond_with	tests		# build with tests
-%define		kdeplasmaver	5.26.1
+%define		kdeplasmaver	5.26.2
 %define		qtver		5.15.2
 %define		kf5ver		5.82.0
 %define		kpname		layer-shell-qt
 Summary:	layer-shell-qt
 Name:		kp5-%{kpname}
-Version:	5.26.1
+Version:	5.26.2
 Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.kde.org/stable/plasma/%{kdeplasmaver}/%{kpname}-%{version}.tar.xz
-# Source0-md5:	839f4d04dd7f373fd0559563c5d7f7ff
+# Source0-md5:	1081622ad04f3aca55973d265a7f60fc
 URL:		http://www.kde.org/
 BuildRequires:	Qt5Core-devel >= %{qtver}
 BuildRequires:	Qt5Gui-devel >= %{qtver}
