@@ -1,34 +1,39 @@
 #
 # Conditional build:
 %bcond_with	tests		# build with tests
-%define		kdeplasmaver	5.93.0
+%define		kdeplasmaver	5.27.10
 %define		qtver		5.15.2
-%define		kf6ver		5.82.0
+%define		kf5ver		5.82.0
 %define		kpname		layer-shell-qt
 Summary:	layer-shell-qt
 Name:		kp5-%{kpname}
-Version:	5.93.0
-Release:	0.1
+Version:	5.27.10
+Release:	1
 License:	LGPL v2.1+
 Group:		X11/Libraries
-Source0:	https://download.kde.org/unstable/plasma/%{kdeplasmaver}/%{kpname}-%{version}.tar.xz
-# Source0-md5:	b6a158dddbb1bafc18f311e91bd28b8a
+Source0:	https://download.kde.org/stable/plasma/%{kdeplasmaver}/%{kpname}-%{version}.tar.xz
+# Source0-md5:	54562594af547614648cded522c3e747
 URL:		http://www.kde.org/
-BuildRequires:	Qt6Core-devel >= %{qtver}
-BuildRequires:	Qt6Gui-devel >= %{qtver}
-BuildRequires:	Qt6Network-devel >= %{qtver}
-BuildRequires:	Qt6Qml-devel >= %{qtver}
-BuildRequires:	Qt6Quick-devel >= %{qtver}
-BuildRequires:	Qt6Test-devel >= %{qtver}
-BuildRequires:	Qt6WaylandClient-devel >= %{qtver}
-BuildRequires:	Qt6Widgets-devel >= %{qtver}
+BuildRequires:	Qt5Core-devel >= %{qtver}
+BuildRequires:	Qt5Gui-devel >= %{qtver}
+BuildRequires:	Qt5Network-devel >= %{qtver}
+BuildRequires:	Qt5Qml-devel >= %{qtver}
+BuildRequires:	Qt5Quick-devel >= %{qtver}
+BuildRequires:	Qt5Test-devel >= %{qtver}
+BuildRequires:	Qt5WaylandClient-devel >= %{qtver}
+BuildRequires:	Qt5Widgets-devel >= %{qtver}
+BuildRequires:	Qt5X11Extras-devel >= %{qtver}
+BuildRequires:	Qt5XkbCommonSupport-devel >= %{qtver}
 BuildRequires:	cmake >= 3.16.0
 BuildRequires:	gettext-devel
-BuildRequires:	kf6-kcmutils-devel >= %{kf6ver}
-BuildRequires:	kf6-kcrash-devel >= %{kf6ver}
-BuildRequires:	kf6-kdeclarative-devel >= %{kf6ver}
-BuildRequires:	kf6-kglobalaccel-devel >= %{kf6ver}
-BuildRequires:	kf6-kidletime-devel >= %{kf6ver}
+BuildRequires:	kf5-kcmutils-devel >= %{kf5ver}
+BuildRequires:	kf5-kcrash-devel >= %{kf5ver}
+BuildRequires:	kf5-kdeclarative-devel >= %{kf5ver}
+BuildRequires:	kf5-kdelibs4support-devel >= %{kf5ver}
+BuildRequires:	kf5-kglobalaccel-devel >= %{kf5ver}
+BuildRequires:	kf5-kidletime-devel >= %{kf5ver}
+BuildRequires:	kf5-kwayland-devel
+BuildRequires:	kf5-plasma-framework-devel >= %{kf5ver}
 BuildRequires:	ninja
 BuildRequires:	rpmbuild(macros) >= 1.164
 BuildRequires:	wayland-protocols
@@ -37,7 +42,7 @@ BuildRequires:	xz
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		qt6dir		%{_libdir}/qt6
+%define		qt5dir		%{_libdir}/qt5
 
 %description
 kscreenlocker
@@ -81,14 +86,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%ghost %{_libdir}/libLayerShellQtInterface.so.6
-%attr(755,root,root) %{_libdir}/libLayerShellQtInterface.so.*.*
-%attr(755,root,root) %{_libdir}/qt6/plugins/wayland-shell-integration/liblayer-shell.so
-%dir %{_libdir}/qt6/qml/org/kde/layershell
-%{_libdir}/qt6/qml/org/kde/layershell/LayerShellQtQml.qmltypes
-%{_libdir}/qt6/qml/org/kde/layershell/kde-qmlmodule.version
-%attr(755,root,root) %{_libdir}/qt6/qml/org/kde/layershell/libLayerShellQtQml.so
-%{_libdir}/qt6/qml/org/kde/layershell/qmldir
+%ghost %{_libdir}/libLayerShellQtInterface.so.5
+%attr(755,root,root) %{_libdir}/libLayerShellQtInterface.so.*.*.*
+%attr(755,root,root) %{_libdir}/qt5/plugins/wayland-shell-integration/liblayer-shell.so
 
 %files devel
 %defattr(644,root,root,755)
