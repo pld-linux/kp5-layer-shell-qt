@@ -2,49 +2,39 @@
 # Conditional build:
 %bcond_with	tests		# unit tests
 
-%define		kdeplasmaver	5.27.12
-%define		qtver		5.15.2
-%define		kf5ver		5.82.0
+%define		kp_ver		5.27.12
+%define		qt_ver		5.15.2
+%define		kf_ver		5.102.0
 %define		kpname		layer-shell-qt
 Summary:	LayerShellQt - component to easily use clients based on wlr-layer-shell
 Summary(pl.UTF-8):	LayerShellQt - komponent pozwalający łatwo używać klientów opartych na wlr-layer-shell
 Name:		kp5-%{kpname}
 Version:	5.27.12
 Release:	1
-License:	LGPL v2.1+
+License:	LGPL v3+
 Group:		X11/Libraries
-Source0:	https://download.kde.org/stable/plasma/%{kdeplasmaver}/%{kpname}-%{version}.tar.xz
+Source0:	https://download.kde.org/stable/plasma/%{kp_ver}/%{kpname}-%{version}.tar.xz
 # Source0-md5:	40e1124956912a0fd6ad2757ac6032e4
 URL:		https://kde.org/
-BuildRequires:	Qt5Core-devel >= %{qtver}
-BuildRequires:	Qt5Gui-devel >= %{qtver}
-BuildRequires:	Qt5Network-devel >= %{qtver}
-BuildRequires:	Qt5Qml-devel >= %{qtver}
-BuildRequires:	Qt5Quick-devel >= %{qtver}
-BuildRequires:	Qt5Test-devel >= %{qtver}
-BuildRequires:	Qt5WaylandClient-devel >= %{qtver}
-BuildRequires:	Qt5Widgets-devel >= %{qtver}
-BuildRequires:	Qt5X11Extras-devel >= %{qtver}
-BuildRequires:	Qt5XkbCommonSupport-devel >= %{qtver}
+BuildRequires:	Qt5Core-devel >= %{qt_ver}
+BuildRequires:	Qt5Gui-devel >= %{qt_ver}
+BuildRequires:	Qt5Qml-devel >= %{qt_ver}
+BuildRequires:	Qt5WaylandClient-devel >= %{qt_ver}
+BuildRequires:	Qt5XkbCommonSupport-devel >= %{qt_ver}
 BuildRequires:	cmake >= 3.16.0
-BuildRequires:	gettext-devel
-BuildRequires:	kf5-kcmutils-devel >= %{kf5ver}
-BuildRequires:	kf5-kcrash-devel >= %{kf5ver}
-BuildRequires:	kf5-kdeclarative-devel >= %{kf5ver}
-BuildRequires:	kf5-kdelibs4support-devel >= %{kf5ver}
-BuildRequires:	kf5-kglobalaccel-devel >= %{kf5ver}
-BuildRequires:	kf5-kidletime-devel >= %{kf5ver}
-BuildRequires:	kf5-kwayland-devel
-BuildRequires:	kf5-plasma-framework-devel >= %{kf5ver}
+BuildRequires:	kf5-extra-cmake-files >= %{kf_ver}
 BuildRequires:	ninja
-BuildRequires:	rpmbuild(macros) >= 1.164
+BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.605
+BuildRequires:	wayland-devel >= 1.3
 BuildRequires:	wayland-protocols
-BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libxkbcommon-devel
 BuildRequires:	xz
-BuildRequires:	zlib-devel
+Requires:	Qt5Core >= %{qt_ver}
+Requires:	Qt5Gui >= %{qt_ver}
+Requires:	Qt5WaylandClient >= %{qt_ver}
+Requires:	wayland >= 1.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		qt5dir		%{_libdir}/qt5
 
 %description
 LayerShellQt component is meant for applications to be able to easily
@@ -59,6 +49,8 @@ Summary:	Header files for %{kpname} development
 Summary(pl.UTF-8):	Pliki nagłówkowe dla programistów używających %{kpname}
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	Qt5Core-devel >= %{qt_ver}
+Requires:	Qt5Gui-devel >= %{qt_ver}
 
 %description devel
 Header files for %{kpname} development.
@@ -73,8 +65,9 @@ Pliki nagłówkowe dla programistów używających %{kpname}.
 %cmake -B build \
 	-G Ninja \
 	%{!?with_tests:-DBUILD_TESTING=OFF} \
-	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-	-DHTML_INSTALL_DIR=%{_kdedocdir}
+	-DKDE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
+	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON
+
 %ninja_build -C build
 
 %if %{with tests}
@@ -83,22 +76,24 @@ ctest
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %ninja_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%ghost %{_libdir}/libLayerShellQtInterface.so.5
+%doc README.md
 %attr(755,root,root) %{_libdir}/libLayerShellQtInterface.so.*.*.*
+%ghost %{_libdir}/libLayerShellQtInterface.so.5
 %attr(755,root,root) %{_libdir}/qt5/plugins/wayland-shell-integration/liblayer-shell.so
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/libLayerShellQtInterface.so
 %{_includedir}/LayerShellQt
 %{_libdir}/cmake/LayerShellQt
-%{_libdir}/libLayerShellQtInterface.so
