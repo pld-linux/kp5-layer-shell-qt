@@ -22,7 +22,7 @@ BuildRequires:	Qt5Qml-devel >= %{qt_ver}
 BuildRequires:	Qt5WaylandClient-devel >= %{qt_ver}
 BuildRequires:	Qt5XkbCommonSupport-devel >= %{qt_ver}
 BuildRequires:	cmake >= 3.16.0
-BuildRequires:	kf5-extra-cmake-files >= %{kf_ver}
+BuildRequires:	kf5-extra-cmake-modules >= %{kf_ver}
 BuildRequires:	ninja
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.605
